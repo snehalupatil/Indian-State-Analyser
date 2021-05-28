@@ -7,6 +7,7 @@ public class CensusAnalyserTest {
     private static final String WRONG_CSV_FILE_PATH = "./src/main/resources/IndiaStateCensusData.csv";
     private static final String WRONG_TYPE_FILE_PATH = "./src/test/resources/IndiaStateCensusData.txt";
     private static final String WRONG_DELIMETER_FILE = "./src/test/resources/IndiaStateCensusData.csv";
+    private static final String WRONG_HEADER_FILE = "./src/test/resources/IndiaStateCensusData.csv";
 
     /**
      * Check number of records matches
@@ -24,7 +25,7 @@ public class CensusAnalyserTest {
      * If csv file is incorrect throw custom exception
      */
     @Test
-    public void givenIndiaCensusData_WithWrongFile_ShouldThrowException() {
+    public void givenIndiaCensusData_WithIncorrectFile_ShouldThrowException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             ExpectedException exceptionRule = ExpectedException.none();
@@ -39,7 +40,7 @@ public class CensusAnalyserTest {
      * csv file correct but type incorrect returns a custom exception
      */
     @Test
-    public void givenIndiaCensusData_WithWrongType_ShouldThrowExceptionIfWrongFile() {
+    public void givenIndiaCensusData_WithIncorrectType_ShouldThrowExceptionIfWrongFile() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             ExpectedException exceptionRule = ExpectedException.none();
@@ -54,12 +55,27 @@ public class CensusAnalyserTest {
      * Correct csv file, but delimiter incorrect returns a custom exception
      */
     @Test
-    public void givenIndiaCensusData_WithWrongDelimeter_ShouldThrowException() {
+    public void givenIndiaCensusData_WithIncorrectDelimeter_ShouldThrowException() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CensusAnalyserException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_DELIMETER_FILE);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
+        }
+    }
+
+    /**
+     *  Correct csv file, but header incorrect returns a custom exception
+     */
+    @Test
+    public void givenIndiaCensusData_WithIncorrectHeader_ShouldThrowException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            ExpectedException exceptionRule = ExpectedException.none();
+            exceptionRule.expect(CensusAnalyserException.class);
+            censusAnalyser.loadIndiaCensusData(WRONG_HEADER_FILE);
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
         }
